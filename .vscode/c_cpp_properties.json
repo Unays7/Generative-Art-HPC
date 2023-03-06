@@ -3,7 +3,7 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "/Library/Developer/CommandLineTools/usr/include"
             ],
             "defines": [],
             "macFrameworkPath": [
