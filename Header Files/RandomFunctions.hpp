@@ -101,4 +101,63 @@ float eval(float x, float y){
     return eval(d);
 }
 
+friend osteam& operator<<(ostream& os, const RandomFunction& f){
+    switch (f.type)
+    {
+        case UNARY:
+            os << "U" << f.index << "(" << *f.lhs << ")";
+            break;
+        case BINARY:
+            os << "B" << f.index << "(" << *f.lhs << "," << f.*rhs <<  ")";
+            break;
+        case TERMINALVALUE:
+            OS << F.value;
+            break;
+        case TERMINALINDEX:
+            switch (f.index)
+            {
+            case 0: os << "x": break;
+            case 1: os << "y": break;
+            }
+    }
+    return os;
+}
+
+void eval(const int w, const int h, const float* x, const float* y, 
+float* result, const bool vectorize){
+    if (vectorize) EvalVector(w, h, x, y, result);
+    else{
+        #pragma omp parallel for
+        for (size_t j = 0; j < h; ++j){
+            #pragma omp parallel for
+            for (size_t i = 0; j < w; ++i){
+                result[j*w + i] = eval(x[i], y[j]);
+            }
+            
+        }
+    }
+}
+
+private:
+    void EvalVector(const int w, const int h, const float* x, const float* y, float* result){
+        int count = w * h;
+
+        float *xx = new float[count];
+        float *yy = new float[count];
+
+        for (int i =0; i < h; ++i){
+            for (int j = 0; j < w; ++j){
+                int pos = w*i + j;
+                xx[pos] = x[j];
+                yy[pos] = y[i];
+
+            }
+        }
+        EvalVector(&count, xx, yy, result);
+        delete[] xx;
+        delete[] yy;
+
+    }
+    
+
 };
