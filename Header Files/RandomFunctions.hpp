@@ -22,6 +22,7 @@ RandomFunction *lhs;
 RandomFunction *rhs;
 int v;
 int g;
+int h;
 
 public:
     RandomFunction(int count, int depth, bool vectorize){
